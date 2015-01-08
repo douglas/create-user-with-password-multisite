@@ -1,13 +1,13 @@
 <?php
 /*
-  Plugin Name: WPMU Register User With Password
+  Plugin Name: Register User With Password Multisite
   Plugin URI: http://www.mooveagency.com
   Description: Add ability to register user with password on WP multisite instalation.
   Version: 1.0
   Author: Jakub Glos
   Author URI: http://www.mooveagency.com
   License:
-  Text Domain: wpmu-register-user-with-password
+  Text Domain: register-user-with-password-multisite
  */
 
 
@@ -21,5 +21,3 @@ if (is_admin()) {
     require_once( 'php/ruwp.php' );
     $mdu = new WPMU_Register_User_With_Password();
 }
-
-

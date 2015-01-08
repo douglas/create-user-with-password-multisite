@@ -1,6 +1,6 @@
 === Plugin Name ===
 Plugin Name: WPMU Register User With Password
-Contributors: jakubmoove
+Contributors: mooveagency, jakubmoove
 Stable tag: trunk
 Plugin URI: 
 Description: Adds functionality to register user with password on WP multisite instalation.
@@ -11,7 +11,7 @@ Requires at least: 3.0.1
 Author: Jakub Glos
 Author URI: 
 License: GPLv2
-Text Domain: wpmu-register-user-with-password
+Text Domain: register-user-with-password-multisite
 
 With this plugin you will be able to register users in WP Multisite instalation with password.
 
