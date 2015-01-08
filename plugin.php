@@ -19,5 +19,5 @@ if (defined('DOING_CRON') || isset($_GET['doing_wp_cron'])) {
 // fire in administration only
 if (is_admin()) {
     require_once( 'php/ruwp.php' );
-    $mdu = new WPMU_Register_User_With_Password();
+    $mdu = new Register_User_With_Password();
 }

@@ -3,7 +3,7 @@
 /**
  * Main plugin class
  * */
-class WPMU_Register_User_With_Password {
+class Register_User_With_Password {
 
     /**
      * Initialization
