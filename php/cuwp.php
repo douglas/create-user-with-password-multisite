@@ -17,14 +17,13 @@ class Create_User_With_Password {
 
         // add css
         wp_enqueue_style('cuwp-style', plugins_url('create-user-with-password-multisite/css/style.css'));
-        
+
         // listen for REQUEST
         add_action('init', array($this, 'cuwp_listen'), 3);
 
-   
+
         // remove filter that updates welcome email
         remove_filter('site_option_welcome_user_email', 'welcome_user_msg_filter');
-
     }
 
     /**
@@ -55,8 +54,8 @@ class Create_User_With_Password {
             <tr>
                 <td>
                     <div class="pass-error">
-                        
-                        <?php _e( "Passwords do not match.", 'create-user-with-password-multisite' ); ?>
+
+                        <?php _e("Passwords do not match.", 'create-user-with-password-multisite'); ?>
                     </div>
                 </td>
             </tr>
@@ -125,17 +124,15 @@ class Create_User_With_Password {
 Your new account has been set up.
 
 You can log in with the following information:
-Username: %user_login%
-Password: %pass1%
+Username: %1$s
+Password: %2$s
 
-%url%
+%3$s
 
 Thanks!', 'create-user-with-password-multisite');
 
-                        $replaced_login = str_replace('%user_login%', sanitize_user(wp_unslash($_REQUEST['user_login']), true), $email);
-                        $replaced_url = str_replace('%url%', get_admin_url(), $replaced_login);
-                        $replaced_all = str_replace('%pass1%', sanitize_text_field($_REQUEST['cuwp_pass1']), $replaced_url);
-                        
+                        $replaced_all = sprintf(__($email, 'create-user-with-password-multisite'), sanitize_user(wp_unslash($_REQUEST['user_login']), true), sanitize_text_field($_REQUEST['cuwp_pass1']), get_admin_url() );
+
                         $headers = 'From: ' . get_option('admin_email') . "\r\n" .
                                 'Reply-To: noreply@noreply.com' . "\r\n" .
                                 'X-Mailer: PHP/' . phpversion();
@@ -149,7 +146,7 @@ Thanks!', 'create-user-with-password-multisite');
 
                         die();
                     } else {
-                        
+
                         wp_redirect($redirect);
                         die();
                     }
