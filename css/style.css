@@ -1,0 +1,7 @@
+#createuser .pass-error{
+    color:red;
+    display:none;
+}
+#adduser .hook-pass{
+    display:none;
+}
