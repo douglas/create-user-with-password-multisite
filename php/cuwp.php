@@ -3,7 +3,7 @@
 /**
  * Main plugin class
  * */
-class Create_User_With_Password {
+class CUWP_Create_User_With_Password {
 
     /**
      * Initialization
@@ -19,7 +19,7 @@ class Create_User_With_Password {
         wp_enqueue_style('cuwp-style', plugins_url('create-user-with-password-multisite/css/style.css'));
 
         // listen for REQUEST
-        add_action('init', array($this, 'cuwp_listen'), 3);
+        add_action('admin_action_createuser', array($this, 'cuwp_listen'), 3);
 
 
         // remove filter that updates welcome email
@@ -69,8 +69,12 @@ class Create_User_With_Password {
      */
     public function cuwp_listen() {
 
-        if (isset($_REQUEST['action']) && 'createuser' == $_REQUEST['action'] && $_REQUEST['cuwp_security'] == 'cuwp') {
-
+        if (isset($_REQUEST['cuwp_security']) && 'cuwp' == $_REQUEST['cuwp_security']) {
+            
+            if(sanitize_text_field($_REQUEST['cuwp_pass1']) != sanitize_text_field($_REQUEST['cuwp_pass2'])){
+                wp_die(__('Passwords do not match.', 'create-user-with-password-multisite'));
+            }
+            
             global $wpdb;
             check_admin_referer('create-user', '_wpnonce_create-user');
             if (!current_user_can('create_users'))
@@ -120,25 +124,26 @@ class Create_User_With_Password {
 
                     if (isset($_POST['noconfirmation']) && is_super_admin()) {
                         // send email with login details
-                        $email = __('Dear User,
-Your new account has been set up.
+                        $email = 'Dear User,'. '<br/>' .
+                                'Your new account has been set up.'. '<br/>' .
+                                '<br/>' .
+                                'You can log in with the following information:'. '<br/>' .
+                                'Username: %1$s' . '<br/>' .
+                                'Password: %2$s' . '<br/>' .
+                                '<br/>' .
+                                '%3$s ' . '<br/>' .
+                                '<br/>' .
+                                'Thanks!'. '<br/>';
 
-You can log in with the following information:
-Username: %1$s
-Password: %2$s
-
-%3$s
-
-Thanks!', 'create-user-with-password-multisite');
-
-                        $replaced_all = sprintf(__($email, 'create-user-with-password-multisite'), sanitize_user(wp_unslash($_REQUEST['user_login']), true), sanitize_text_field($_REQUEST['cuwp_pass1']), get_admin_url() );
+                        $replaced_all = sprintf(__($email, 'create-user-with-password-multisite'), sanitize_user(wp_unslash($_REQUEST['user_login']), true), sanitize_text_field($_REQUEST['cuwp_pass1']), get_admin_url());
 
                         $headers = 'From: ' . get_option('admin_email') . "\r\n" .
+                                'Content-type: text/html; charset=utf-8\n' .
                                 'Reply-To: noreply@noreply.com' . "\r\n" .
                                 'X-Mailer: PHP/' . phpversion();
 
-                        $mail = mail(sanitize_text_field($_REQUEST['email']), __('Login details', 'create-user-with-password-multisite'), $replaced_all, $headers);
-                        if ($mail == true) {
+                        $mail = wp_mail(sanitize_text_field($_REQUEST['email']), __('Login details', 'create-user-with-password-multisite'), $replaced_all, $headers);
+                        if (true == $mail) {
                             wp_redirect($redirect);
                         } else {
                             wp_die(__('We are sorry but an error has occurred whilst sending the email with the login details. Please deactivate the "Create User with Password Multisite" plugin and contact us via email to resolve this issue: plugins@mooveagency.com', 'create-user-with-password-multisite'));
