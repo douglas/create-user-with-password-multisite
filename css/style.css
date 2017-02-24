@@ -1,7 +1,9 @@
-#createuser .pass-error{
+#createuser tr.pass-error td {
+    padding-left: 0px;
     color:red;
     display:none;
 }
+
 #adduser .hook-pass{
     display:none;
 }
