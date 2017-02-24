@@ -16,9 +16,9 @@ jQuery(document).ready(function ($) {
         var pass2 = $('#createuser input[name="cuwp_pass1"]').val();
 
         if (pass1 !== pass2) {
-            $('#createuser .pass-error').show();
+            $('#createuser tr.pass-error td').show();
         } else {
-            $('#createuser .pass-error').hide();
+            $('#createuser tr.pass-error td').hide();
         }
     });
 
